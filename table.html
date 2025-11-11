@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cluster Nodes</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css" />
+    <style>
+        body {
+            font-family: 'BentonSansRegular', Arial, 'Lucida Grande', sans-serif;
+            font-size: 0.9em;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-top: 0;
+            margin-bottom: 30px;
+            font-size: 2em;
+            border-bottom: 3px solid #c10020;
+            padding-bottom: 15px;
+        }
+        
+        .filter-controls {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 15px;
+            background-color: #f8f8f8;
+            border: 1px solid #e1e1e1;
+            border-radius: 5px;
+        }
+        
+        .filter-controls label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .footer-info {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f8f8;
+            border: 1px solid #e1e1e1;
+            border-radius: 5px;
+            line-height: 1.8;
+        }
+        
+        .footer-info p {
+            margin: 10px 0;
+        }
+        
+        td.details-control {
+            cursor: pointer;
+            text-align: center;
+            font-size: 24px;
+        }
+        
+        tr.shown td.details-control {
+            color: #c10020;
+        }
+        
+        .extra-info-box {
+            background: #f8f8f8;
+            border: 1px solid #e1e1e1;
+            margin: 10px 20px;
+            padding: 10px;
+        }
+        
+        a:link {
+            color: #0066cc;
+        }
+        
+        a:visited {
+            color: #0066cc;
+        }
+        
+        a:hover {
+            color: #004499;
+            text-decoration: underline;
+        }
+        
+        input[type="checkbox"] {
+            transform: scale(1.25);
+        }
+        
+        input[type="number"] {
+            width: 60px;
+            padding: 4px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SCC Node List</h1>
+        
+        <!-- Filter Controls -->
+        <div class="filter-controls">
+            <label><input type="checkbox" id="cpuOnly"> Show only nodes without GPUs</label>
+            <label><input type="checkbox" id="gpuOnly"> Show only nodes with GPUs</label>
+            <label><input type="checkbox" id="sharedOnly"> Show only shared nodes</label>
+            <label>Minimum RAM (GB):
+                <input type="number" id="minRAM" min="0">
+            </label>
+        </div>
+        
+        <!-- Table -->
+        <table id="cluster" class="cell-border stripe hover compact">
+            <thead>
+                <tr>
+                    <th></th> <!-- icon -->
+                    <th>Host<br>Names</th>
+                    <th>Processor Type /<br>Architecture</th>
+                    <th>Cores</th>
+                    <th>Memory<br>(GB)</th>
+                    <th>GPU<br>Type</th>
+                    <th># of<br>GPUs</th>
+                    <th>Shared /<br> Buy in</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        
+        <!-- Footer Information -->
+        <div class="footer-info">
+            <p>Use of all of the GPUs is currently in 'friendly user' mode so only the main CPU usage is charged at the moment for all SCC nodes with GPUs.</p>
+            <p>The Knights Landing nodes (scc-ib1 and scc-ib2) are also currently in 'friendly user' mode with no charge for CPU usage on these nodes.</p>
+            <p>Depending on the speed, memory, and other factors, each node type is charged at a different SU rate per hour, as shown in the table above. Our <a href="https://www.bu.edu/tech/support/research/account-management/manage-project/#SUS">allocations policy is explained in more detail here</a>.</p>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
+    <script src="./data.js"></script>
+    <script>
+        // --- Custom filter logic ---
+        $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+            var processorType = data[2].trim().toLowerCase();
+            var memoryGB = parseInt(data[4]);
+            var gpuType = data[5].trim().toLowerCase();
+            var numGPU = parseInt(data[6]);
+            var sharing = data[7].trim().toUpperCase();
+
+            var cpuOnly = $('#cpuOnly').prop('checked');
+            var gpuOnly = $('#gpuOnly').prop('checked');
+            var sharedOnly = $('#sharedOnly').prop('checked');
+            var minRAM = parseInt($('#minRAM').val()) || 0;
+
+            if (cpuOnly && (gpuType !== 'none' || numGPU > 0)) return false;
+            if (gpuOnly && (gpuType === 'none' || numGPU === 0)) return false;
+            if (sharedOnly && sharing !== 'SHARED') return false;
+            if (memoryGB < minRAM) return false;
+
+            return true;
+        });
+
+        // --- Hostnames cell unchanged, just add one dummy extraInfo column to data
+        function buildHostnamesCell(hostnames, idx) {
+            if (!Array.isArray(hostnames)) {
+                if (typeof hostnames === 'string') {
+                    hostnames = hostnames.split(',').map(h => h.trim()).filter(Boolean);
+                } else {
+                    hostnames = [];
+                }
+            }
+            var previewCount = 3;
+            var previewHosts = hostnames.slice(0, previewCount);
+            var hiddenHosts = hostnames.slice(previewCount);
+
+            var expanderId = "hostexpander-" + idx;
+            var html = '<ul style="margin:0; padding-left:20px;">';
+
+            // Show all preview hosts
+            previewHosts.forEach(function(h) {
+                html += '<li>' + h + '</li>';
+            });
+            // If there are hidden hosts, render them in a div (default hidden)
+            if (hiddenHosts.length > 0) {
+                html += '<li><span class="host-expander" style="color:blue; cursor:pointer;" data-target="' + expanderId + '" data-action="expand">[+' + hiddenHosts.length + ' more]</span></li>';
+                html += '<div id="' + expanderId + '" style="display:none;">';
+                hiddenHosts.forEach(function(h) {
+                    html += '<li>' + h + '</li>';
+                });
+                html += '<li><span class="host-expander" style="color:blue; cursor:pointer;" data-target="' + expanderId + '" data-action="collapse">[- hide]</span></li>';
+                html += '</div>';
+            }
+            html += '</ul>';
+            return html;
+        }
+
+        function buildExtraInfo(row) {
+            let base = `
+                <div class="extra-info-box">
+                    <b>Set Information</b><br>
+                    <ul>
+                        <li>Hosts: ${Array.isArray(row[0]) ? row[0].join(', ') : row[0]}</li>
+                        <li>Processor: ${row[1]}</li>
+                        <li>Cores: ${row[2]}</li>
+                        <li>Memory: ${row[3]} GB</li>
+                        <li>GPU: ${row[4]} (${row[5]})</li>
+                        <li>Flag: ${row[6]}</li>
+                    </ul>
+            `;
+            if (typeof row[7] !== 'undefined' && row[7].length) {
+                base += `
+                    <b>Other info:</b>
+                    <ul>
+                `;
+                row[7].forEach(element => {
+                    base += `<li>${element}</li>`;
+                });
+            }
+            
+            base += `
+                    </ul>
+                </div>
+            `;
+
+            return base;
+        }
+
+        $(document).ready(function() {
+            // Prepare data: add blank icon column, and extra info at end
+            var tableRows = data.map(function(row, idx) {
+                var hostnamesCell = buildHostnamesCell(row[0], idx);
+                var extraInfo = buildExtraInfo(row);
+                return [
+                    '',                   // icon cell (details-control)
+                    hostnamesCell,
+                    row[1], // processor_type
+                    row[2], // cores
+                    row[3], // memory
+                    row[4], // gpu_type
+                    row[5], // gpus
+                    row[6], // flag
+                    extraInfo             // **not displayed as column**
+                ];
+            });
+
+            var table = $('#cluster').DataTable({
+                order: [[1, 'asc']],
+                data: tableRows,
+                columnDefs: [
+                    {
+                        targets: 0,
+                        className: 'details-control',
+                        orderable: false,
+                        searchable: false,
+                        width: "30px",
+                        render: function() {
+                            return '<span class="details-icon" style="cursor:pointer;">&#8853;</span>'; // ⊕
+                        }
+                    },
+                    {
+                        targets: 8, // Hide extraInfo column (not visible)
+                        visible: false,
+                        searchable: false
+                    }
+                ]
+            });
+
+            $('#cpuOnly, #gpuOnly, #sharedOnly, #minRAM').on('change keyup', function() {
+                table.draw();
+            });
+
+            // Hostnames expander click
+            $('#cluster').on('click', '.host-expander', function() {
+                var tgt = $(this).data('target');
+                var action = $(this).data('action');
+                if (action === 'expand') {
+                    $(this).closest('li').hide();
+                    $('#' + tgt).show();
+                } else if (action === 'collapse') {
+                    $('#' + tgt).hide();
+                    var cell = $(this).closest('td, div').parent();
+                    cell.find('span.host-expander[data-target="' + tgt + '"][data-action="expand"]').closest('li').show();
+                }
+            });
+
+            // Details icon click handler
+            $('#cluster tbody').on('click', 'td.details-control', function() {
+                var tr = $(this).closest('tr');
+                var row = table.row(tr);
+
+                if (row.child.isShown()) {
+                    // Close: change to plus icon, hide info
+                    tr.removeClass('shown');
+                    $(this).find('span.details-icon').html('&#8853;'); // ⊕
+                    row.child.hide();
+                } else {
+                    // Open: change to X icon, show info
+                    tr.addClass('shown');
+                    $(this).find('span.details-icon').html('&#8854;'); // ⊖
+                    // Show info from hidden column
+                    row.child(row.data()[8]).show();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
