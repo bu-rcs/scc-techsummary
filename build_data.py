@@ -1,9 +1,18 @@
+#!/share/pkg.8/python3/3.12.4/install/bin/python3
+
 import pandas as pd
 import json
+import sys, os
+
+# set output filepath/name
+output_filename = sys.argv[1] if len(sys.argv) > 1 else 'data.js'
+
+# set git/data dir
+git_dir = os.path.dirname(os.path.abspath(__file__))
 
 # load nodes data file
 df = pd.read_csv("/projectnb/rcsmetrics/nodes/data/nodes.csv")
-extra_notes = pd.read_csv("extrainfo.csv")
+extra_notes = pd.read_csv(os.path.join(git_dir, "extrainfo.csv"))
 
 # merge extra nodes onto base dataframe
 df = pd.merge(df, extra_notes, on='host', how='left')
@@ -100,7 +109,7 @@ export_data = grouped.apply(
 ).tolist()
 
 # output to a "js" file, containing just the const array that will be used for the table
-with open("data.js", 'w') as outfile:
+with open(output_filename, 'w') as outfile:
     outfile.write("const data = ")
     json.dump(export_data, outfile, indent=2)
     outfile.write(";")
