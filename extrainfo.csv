@@ -4,7 +4,7 @@ scc2,"scc2 is a 'login node'. SU usage is not tracked, but it does not run batch
 geo,"geo is a 'login node'. SU usage is not tracked, but it does not run batch jobs."
 scc4,"scc4 is a 'login node'. SU usage is not tracked, but it does not run batch jobs."
 scc-ib1,"SU usage is not tracked on scc-ib1 (Knights Landing node)."
-scc-ib2,"SU usage is not tracked on scc-ib1 (Knights Landing node)."
+scc-ib2,"SU usage is not tracked on scc-ib2 (Knights Landing node)."
 scc-v01,"scc-v01 is a VirtualGL node."
 scc-v02,"scc-v02 is a VirtualGL node."
 scc-v03,"scc-v03 is a VirtualGL node."
