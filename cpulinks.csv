@@ -1,0 +1,30 @@
+cpu_model,cpu_display_name,cpu_url
+Gold-6242,Intel Gold 6242,https://www.intel.com/content/www/us/en/products/sku/192440/intel-xeon-gold-6242-processor-22m-cache-2-80-ghz/specifications.html
+E5-2407v2,Intel E5-2407v2,https://www.intel.com/content/www/us/en/products/sku/75782/intel-xeon-processor-e52407-v2-10m-cache-2-40-ghz/specifications.html
+7250,Intel Xeon Phi (Knights Landing) 7250,https://www.intel.com/content/www/us/en/products/sku/94035/intel-xeon-phi-processor-7250-16gb-1-40-ghz-68-core/specifications.html
+E5-2680v4,Intel Xeon E5-2680v4,https://www.intel.com/content/www/us/en/products/sku/91754/intel-xeon-processor-e52680-v4-35m-cache-2-40-ghz/specifications.html
+E5-2670,Intel Xeon E5-2670,https://www.intel.com/content/www/us/en/products/sku/64595/intel-xeon-processor-e52670-20m-cache-2-60-ghz-8-00-gts-intel-qpi/specifications.html
+E5-2650v2,Intel Xeon E5-2650v2,https://www.intel.com/content/www/us/en/products/sku/75269/intel-xeon-processor-e52650-v2-20m-cache-2-60-ghz/specifications.html
+E5-2660v3,Intel Xeon E5-2660v3,https://www.intel.com/content/www/us/en/products/sku/81706/intel-xeon-processor-e52660-v3-25m-cache-2-60-ghz/specifications.html
+E7-4809v3,Intel Xeon E7-4809v3,https://www.intel.com/content/www/us/en/products/sku/84676/intel-xeon-processor-e74809-v3-20m-cache-2-00-ghz/specifications.html
+E7-8867v4,Intel Xeon E7-8867v4,https://www.intel.com/content/www/us/en/products/sku/93804/intel-xeon-processor-e78867-v4-45m-cache-2-40-ghz/specifications.html
+E5-2680,Intel Xeon E5-2680,https://www.intel.com/content/www/us/en/products/sku/64583/intel-xeon-processor-e52680-20m-cache-2-70-ghz-8-00-gts-intel-qpi/specifications.html
+Gold-6226R,Intel Xeon Gold 6226R,https://www.intel.com/content/www/us/en/products/sku/199347/intel-xeon-gold-6226r-processor-22m-cache-2-90-ghz/specifications.html
+Gold-5120,Intel Xeon Gold 5120,https://www.intel.com/content/www/us/en/products/sku/120474/intel-xeon-gold-5120-processor-19-25m-cache-2-20-ghz/specifications.html
+Gold-5118,Intel Xeon Gold 5118,https://www.intel.com/content/www/us/en/products/sku/120473/intel-xeon-gold-5118-processor-16-5m-cache-2-30-ghz/specifications.html
+Gold-6326,Intel Gold 6326,https://www.intel.com/content/www/us/en/products/sku/215274/intel-xeon-gold-6326-processor-24m-cache-2-90-ghz/specifications.html
+Gold-6132,Intel Gold 6132,https://www.intel.com/content/www/us/en/products/sku/123541/intel-xeon-gold-6132-processor-19-25m-cache-2-60-ghz/specifications.html
+Gold-6426Y,Intel Gold 6426Y,https://www.intel.com/content/www/us/en/products/sku/232377/intel-xeon-gold-6426y-processor-37-5m-cache-2-50-ghz/specifications.html
+E5-2620v3,Intel Xeon E5-2620v3,https://www.intel.com/content/www/us/en/products/sku/83352/intel-xeon-processor-e52620-v3-15m-cache-2-40-ghz/specifications.html
+E5-2620v4,Intel Xeon E5-2620v4,https://www.intel.com/content/www/us/en/products/sku/92986/intel-xeon-processor-e52620-v4-20m-cache-2-10-ghz/specifications.html
+Platinum-8468,Intel Platinum 8468,https://www.intel.com/content/www/us/en/products/sku/231735/intel-xeon-platinum-8468-processor-105m-cache-2-10-ghz/specifications.html
+Platinum-8358,Intel Xeon Platinum 8358,https://www.intel.com/content/www/us/en/products/sku/212282/intel-xeon-platinum-8358-processor-48m-cache-2-60-ghz/specifications.html
+Gold-6526Y,Intel Gold 6526Y,https://www.intel.com/content/www/us/en/products/sku/237560/intel-xeon-gold-6526y-processor-37-5m-cache-2-80-ghz/specifications.html
+EPYC-7351,AMD EPYC 7351,https://www.amd.com/en/support/downloads/drivers.html/processors/epyc/epyc-7001-series/amd-epyc-7351.html
+EPYC-7501,AMD EPYC 7501,https://www.amd.com/en/support/downloads/drivers.html/processors/epyc/epyc-7001-series/amd-epyc-7501.html
+EPYC-7702,AMD EPYC 7702,https://www.amd.com/en/support/downloads/drivers.html/processors/epyc/epyc-7002-series/amd-epyc-7702.html
+EPYC-7413,AMD EPYC 7413,https://www.amd.com/en/products/processors/server/epyc/7003-series/amd-epyc-7413.html
+EPYC-7302,AMD EPYC 7302,https://www.amd.com/en/support/downloads/drivers.html/processors/epyc/epyc-7002-series/amd-epyc-7302.html
+EPYC-9354,AMD EPYC 9354,https://www.amd.com/en/products/processors/server/epyc/4th-generation-9004-and-8004-series/amd-epyc-9354.html
+EPYC-9124,AMD EPYC 9124,https://www.amd.com/en/products/processors/server/epyc/4th-generation-9004-and-8004-series/amd-epyc-9124.html
+EPYC-9135,AMD EPYC 9135,https://www.amd.com/en/products/processors/server/epyc/9005-series/amd-epyc-9135.html
