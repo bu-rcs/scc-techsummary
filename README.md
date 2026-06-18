@@ -1,5 +1,7 @@
 # SCC Node List Display
 
+Access live webpage [here](https://rcs.bu.edu/tech-summary/).
+
 A web-based interface for displaying technical information about compute nodes in a university's Shared Computing Cluster (SCC). The system provides an interactive, filterable table of cluster resources including CPU specifications, memory, GPU information, and node availability.
 
 ![preview of table](preview.png)

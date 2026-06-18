@@ -1,0 +1,17 @@
+cpu_arch,avx2,avx512
+broadwell,yes,no
+cascadelake,yes,yes
+emeraldrapids,yes,yes
+genoa,yes,yes
+graniterapids,yes,yes
+haswell,yes,no
+icelake,yes,yes
+ivybridge,no,no
+knl,yes,yes
+milan,yes,no
+naples,yes,no
+rome,yes,no
+sandybridge,no,no
+sapphirerapids,yes,yes
+skylake,yes,yes
+turin,yes,yes
